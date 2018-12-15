@@ -169,3 +169,62 @@ var buildTree = function(inorder, postorder) {
       return root;
     }
   };
+//107. Binary Tree Level Order Traversal II
+var levelOrderBottom = function(root) {
+    let returnArr = [];
+    let getLevelValue = function (node, i,returnArr) {
+         if(node){
+             if(returnArr[i]){
+                 returnArr[i].push(node.val)
+             }else{
+                 returnArr[i]=[node.val]
+             }
+            i++;
+            if(node.left){
+                getLevelValue(node.left,i,returnArr)
+                }
+            if(node.right){
+                getLevelValue(node.right,i,returnArr)
+            }
+         }
+    };
+    getLevelValue(root,0,returnArr)    
+    return returnArr.reverse()
+};
+//108 Convert Sorted Array to Binary Search Tree
+var sortedArrayToBST = function(nums) {
+    if (!nums) {
+        return null;
+    }
+    return helper(nums, 0, nums.length - 1);
+    function helper(nums, low, high) {
+        if (low > high) { // Done
+            return null;
+        }
+        var mid = (low + (high - low) / 2)>>0;
+        var node = new TreeNode(nums[mid]);
+        node.left = helper(nums, low, mid - 1);
+        node.right = helper(nums, mid + 1, high);
+        return node;
+    }
+}
+//109 Convert Sorted List to Binary Search Tree
+var sortedListToBST = function(head) {
+    let nums = [];
+   while(head){
+       nums.push(head.val);
+       head = head.next
+   }
+
+   return helper(nums,0,nums.length-1)
+   function helper(nums, low, high) {
+       if (low > high) { // Done
+           return null;
+       }
+       var mid = (low + (high - low) / 2)|0;
+       var node = new TreeNode(nums[mid]);
+       node.left = helper(nums, low, mid - 1);
+       node.right = helper(nums, mid + 1, high);
+       return node;
+   }
+};
