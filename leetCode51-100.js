@@ -526,6 +526,22 @@ var numDecodings = function(s) {
   }
   return pre2;
 };
+//92. Reverse Linked List II
+var reverseBetween = function(head, m, n) {
+  let nodes = []
+  while (head) {
+      nodes.push(head);
+      head = head.next
+  }
+  let reverseNodes = nodes.splice(m - 1, n - m + 1).reverse();
+  nodes.splice(m - 1, 0, ...reverseNodes)
+  let len = nodes.length;
+  for (let i = 0; i < len - 1; i++) {
+      nodes[i].next = nodes[i + 1]
+  }
+  nodes[len - 1].next = null
+  return nodes[0]
+};
 //93. Restore IP Addresses
 var restoreIpAddresses = function(s) {
   if (s[0] === '0') {
