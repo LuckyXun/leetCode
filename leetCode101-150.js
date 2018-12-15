@@ -126,3 +126,46 @@ var buildTree = function(preorder, inorder) {
       return root;
     }
   };
+//106. Construct Binary Tree from Inorder and Postorder Traversal
+var buildTree = function(inorder, postorder) {
+    let map = new Map();
+    for (let val in inorder) {
+      map.set(inorder[val], val);
+    }
+    return myBuild(inorder, postorder);
+    function myBuild(inorder, postorder) {
+      let len = inorder.length,
+        root = new TreeNode(postorder[len-1]);
+      if (len === 0) {
+        return null;
+      }
+      if (len === 1) {
+        return root;
+      }
+      let leftIndex = +map.get(postorder[len-1])-map.get(inorder[0]);
+      if (!leftIndex) {
+        root.left === null;
+        root.right = myBuild(
+          inorder.slice(leftIndex + 1,len),
+          postorder.slice(leftIndex,len-1)
+        );
+      } else if (leftIndex === len - 1) {
+        root.right === null;
+        root.left = myBuild(
+          inorder.slice(0, leftIndex),
+          postorder.slice(0, leftIndex)
+        );
+      } else {
+        root.right = myBuild(
+          inorder.slice(leftIndex + 1,len),
+          postorder.slice(leftIndex,len-1)
+        );
+        root.left = myBuild(
+          inorder.slice(0, leftIndex),
+          postorder.slice(0, leftIndex)
+        );
+      }
+  
+      return root;
+    }
+  };
