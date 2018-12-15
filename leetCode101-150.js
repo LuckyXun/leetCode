@@ -302,3 +302,23 @@ var pathSum = function(root, sum, nums = []) {
       pathSum(root.right, sum - root.val, nums.slice())
     );
   };
+//114.Flatten Binary Tree to Linked List
+var flatten = function(root) {
+    if(!root){return []}
+     let rightNode = root.right,leftNode = root.left;
+    if(leftNode){
+        flatten(leftNode)
+        maxRight = leftNode ;
+        while(maxRight.right){
+            maxRight = maxRight.right  
+       }
+        
+       maxRight.right = rightNode;
+       root.right = leftNode;
+       root.left = null
+    }
+    if(rightNode){
+        flatten(rightNode)
+    }
+}
+

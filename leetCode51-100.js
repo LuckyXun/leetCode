@@ -292,7 +292,102 @@ var minPathSum = function(
   }
   return cache.get(x + ',' + y);
 };
+//66. Plus One
+var plusOne = function(digits) {
+  var initNum = digits.join('') - 0;
+  if (initNum < 9007199254740991) {
+    return (initNum + 1 + '').split('').map(n => n - 0);
+  } else {
+    for (let len = digits.length - 1; len >= 0; len--) {
+      if (digits[len] + 1 < 10) {
+        digits[len] = digits[len] + 1;
+        return digits;
+      } else {
+        digits[len] = 0;
+      }
+    }
+    if (digits[0] === 0) {
+      digits.unshift(1);
+      return digits;
+    }
+  }
+};
+//67. Add Binary
+var addBinary = function(a, b) {
+  var temp = [],
+    flag = 0;
+  for (
+    let bLen = b.length - 1, aLen = a.length - 1;
+    bLen >= 0 || aLen >= 0;
+    bLen--, aLen--
+  ) {
+    if (bLen < 0) {
+      temp.unshift(a[aLen]);
+    } else if (aLen < 0) {
+      temp.unshift(b[bLen]);
+    } else {
+      temp.unshift(b[bLen] - 0 + (a[aLen] - 0));
+    }
+  }
 
+  for (let len = temp.length - 1; len >= 0; len--) {
+    if (temp[len] - 0 + flag === 2) {
+      temp[len] = 0;
+      flag = 1;
+    } else if (temp[len] - 0 + flag === 3) {
+      temp[len] = 1;
+      flag = 1;
+    } else {
+      temp[len] = temp[len] - 0 + flag;
+      flag = 0;
+    }
+  }
+  if (flag === 1) {
+    temp.unshift(1);
+  }
+  return temp.join('');
+};
+//69. Sqrt(x)
+var mySqrt = function(x) {
+  let n = (x / 2) | 0,
+    left = 0,
+    right = x;
+
+  while (true) {
+    if (n * n === x) {
+      return n;
+    }
+
+    if (n * n > x) {
+      if ((n - 1) * (n - 1) <= x) {
+        return n - 1;
+      } else {
+        right = n - 1;
+      }
+    } else {
+      if ((n + 1) * (n + 1) > x) {
+        return n;
+      } else {
+        left = n + 1;
+      }
+    }
+    n = ((left + right) / 2) | 0;
+  }
+};
+//70. Climbing Stairs
+var climbStairs = function(n) {
+  if (n === 1) {
+    return 1;
+  }
+  if (n === 2) {
+    return 2;
+  }
+  var temp = [1, 2];
+  for (let i = 0; i < n - 2; i++) {
+    temp.push(temp[i] + temp[i + 1]);
+  }
+  return temp.pop();
+};
 //71. Simplify Path
 var simplifyPath = function(path) {
   let paths = path
@@ -438,6 +533,21 @@ var combine = function(n, k, start = 1, cache = new Map()) {
 
   return cache.get(k + ',' + start);
 };
+//80.Remove Duplicates from Sorted Array II
+var removeDuplicates = function(nums) {
+  if (nums.length === 1) {
+    return 1;
+  }
+  for (let i = 0, len = nums.length; i < len; ) {
+    if (nums[i - 1] === nums[i + 1]) {
+      nums.splice(i, 1);
+      len--;
+    } else {
+      i++;
+    }
+  }
+  return nums.length;
+};
 //81. Search in Rotated Sorted Array II
 var search = function(nums, target) {
   for (let i = 0, len = nums.length; i < len; i++) {
@@ -477,6 +587,28 @@ var deleteDuplicates = function(head) {
   }
   return myHeader.next;
 };
+//83. Remove Duplicates from Sorted List
+var deleteDuplicates = function(head) {
+  if (!head) {
+    return head;
+  }
+  var returnNode = new ListNode(head.val);
+  var getLastNode = function() {
+    var tempNode = returnNode;
+    while (tempNode.next) {
+      tempNode = tempNode.next;
+    }
+    return tempNode;
+  };
+  while (head) {
+    if (getLastNode().val !== head.val) {
+      getLastNode().next = new ListNode(head.val);
+    }
+    head = head.next;
+  }
+  return returnNode;
+};
+
 //86. Partition List
 var partition = function(head, x) {
   if (!head) {
@@ -507,6 +639,62 @@ var partition = function(head, x) {
   leftPoint.next = head;
   return left.next;
 };
+//88. Merge Sorted Array
+var merge = function(nums1, m, nums2, n) {
+  nums1.splice(m);
+  nums2.splice(n);
+  for (var i = 0, j = 0; nums1[i] || nums1[i] === 0; ) {
+    if (nums1[i] > nums2[j]) {
+      nums1.splice(i, 0, nums2[j]);
+      j++;
+    }
+    i++;
+  }
+  if (j < nums2.length) {
+    while (nums2[j] || nums2[j] === 0) {
+      nums1.push(nums2[j]);
+      j++;
+    }
+  }
+};
+//89. Gray Code
+var grayCode = function(n) {
+  if (n === 0) {
+    return [0];
+  }
+  if (n === 1) {
+    return [0, 1];
+  }
+  let len = Math.pow(2, n),
+    number = ['0', '1'],
+    flag = 1;
+  while (flag++ < n) {
+    number = number
+      .map(n => '0' + n)
+      .concat(
+        number
+          .slice()
+          .reverse()
+          .map(n => {
+            return '1' + n;
+          })
+      );
+  }
+  return number.map(n => parseInt(n, 2));
+};
+//90. Subsets II
+var subsetsWithDup = function(nums) {
+  let arrayLen = nums.length,
+    numbers = [''];
+  nums.sort();
+  for (let j = 0; j < arrayLen; j++) {
+    numbers = numbers.concat(numbers.map(n => n + ',' + nums[j]));
+  }
+  let set = new Set(numbers);
+
+  numbers = Array.from(set).map(n => (n ? n.substring(1).split(',') : []));
+  return numbers;
+};
 //91. Decode Ways
 var numDecodings = function(s) {
   if (s[0] === '0') {
@@ -528,19 +716,19 @@ var numDecodings = function(s) {
 };
 //92. Reverse Linked List II
 var reverseBetween = function(head, m, n) {
-  let nodes = []
+  let nodes = [];
   while (head) {
-      nodes.push(head);
-      head = head.next
+    nodes.push(head);
+    head = head.next;
   }
   let reverseNodes = nodes.splice(m - 1, n - m + 1).reverse();
-  nodes.splice(m - 1, 0, ...reverseNodes)
+  nodes.splice(m - 1, 0, ...reverseNodes);
   let len = nodes.length;
   for (let i = 0; i < len - 1; i++) {
-      nodes[i].next = nodes[i + 1]
+    nodes[i].next = nodes[i + 1];
   }
-  nodes[len - 1].next = null
-  return nodes[0]
+  nodes[len - 1].next = null;
+  return nodes[0];
 };
 //93. Restore IP Addresses
 var restoreIpAddresses = function(s) {
@@ -610,22 +798,21 @@ function TreeNode(val) {
 var a = new TreeNode(1),
   b = new TreeNode(2),
   c = new TreeNode(3);
-a.right=b;
-c.left=a
+a.right = b;
+c.left = a;
 var inorderTraversal = function(root) {
   let numbers = [];
-  while (root) { 
+  while (root) {
     if (!root.left) {
       numbers.push(root.val);
-      if(root.right){
+      if (root.right) {
         root.right.parent = root.parent;
         root = root.right;
-      }else{
+      } else {
         root = root.parent;
-        if(root){
+        if (root) {
           root.left = null;
         }
-          
       }
       continue;
     }
@@ -635,9 +822,114 @@ var inorderTraversal = function(root) {
 
   return numbers;
 };
+//95. Unique Binary Search Trees II
+var generateTrees = function(n) {
+  if (n === 0) {
+    return [];
+  }
+  return mygenerateTrees(1, n);
+  for (let i = 1; i <= n; i++) {
+    treeNodes.push(...generateTree(i, n));
+  }
+  return treeNodes;
+  function mygenerateTrees(start, end) {
+    if (start > end) {
+      return null;
+    }
+    if (start === end) {
+      return [new TreeNode(start)];
+    }
+    let nodes = [];
+    for (let pos = start; pos <= end; pos++) {
+      let leftNodes = mygenerateTrees(start, pos - 1);
+      let rightNodes = mygenerateTrees(pos + 1, end);
+      if (!leftNodes) {
+        rightNodes.forEach(n => {
+          let tempNode = new TreeNode(pos);
+          tempNode.right = n;
+          nodes.push(tempNode);
+        });
+      }
+      if (!rightNodes) {
+        leftNodes.forEach(n => {
+          let tempNode = new TreeNode(pos);
+          tempNode.left = n;
+          nodes.push(tempNode);
+        });
+      }
+      if (rightNodes && leftNodes) {
+        for (let i = 0, len = leftNodes.length; i < len; i++) {
+          for (let j = 0, len1 = rightNodes.length; j < len1; j++) {
+            let tempNode = new TreeNode(pos);
+            tempNode.left = leftNodes[i];
+            tempNode.right = rightNodes[j];
+            nodes.push(tempNode);
+          }
+        }
+      }
+    }
 
-let date = new Date();
-
-//console.log(inorderTraversal('25525511135'));
-console.log(inorderTraversal(c));
-console.log(new Date() - date + 'ms');
+    return nodes;
+  }
+};
+//96. Unique Binary Search Trees
+var numTrees = function(n) {
+  if (n === 0) {
+    return 0;
+  }
+  if (n === 1) {
+    return 1;
+  }
+  let nums = [1, 1];
+  for (let i = 2; i <= n; i++) {
+    let left = i - 1,
+      right = 0,
+      count = 0;
+    while (left >= 0) {
+      count += nums[left] * nums[right];
+      left--;
+      right++;
+    }
+    nums[i] = count;
+  }
+  return nums[n];
+};
+//98. Validate Binary Search Tree
+var isValidBST = function(root) {
+  let numbers = [];
+  while (root) {
+    if (!root.left) {
+      if (root.val <= numbers[numbers.length - 1]) {
+        return false;
+      }
+      numbers.push(root.val);
+      if (root.right) {
+        root.right.parent = root.parent;
+        root = root.right;
+      } else {
+        root = root.parent;
+        if (root) {
+          root.left = null;
+        }
+      }
+      continue;
+    }
+    root.left.parent = root;
+    root = root.left;
+  }
+  return true;
+};
+//100. Same Tree
+var isSameTree = function(p, q) {
+  if (p === null && q === null) {
+    return true;
+  }
+  if (!(p && q) || p.val !== q.val) {
+    return false;
+  }
+  var leftFlag = true,
+    rightFlag = true;
+  if (p.left || q.left) leftFlag = isSameTree(p.left, q.left);
+  if (p.right || q.right) rightFlag = isSameTree(p.right, q.right);
+  return leftFlag && rightFlag;
+};
