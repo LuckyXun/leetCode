@@ -1,3 +1,7 @@
+function TreeLinkNode(val) {
+  this.val = val;
+  this.left = this.right = this.next = null;
+}
 //101. Symmetric Tree
 var isSymmetric = function(root) {
   if (!root) {
@@ -261,23 +265,21 @@ var isBalanced = function(root) {
 
 //111. Minimum Depth of Binary Tree
 var minDepth = function(root) {
-    if(!root){
-        return 0
-    }
-    if(root.left&&root.right){
-          return Math.min(minDepth(root.left), minDepth(root.right))+1
-    }
-    else if(root.left){
-        return minDepth(root.left)+1
-    }else if(root.right){
-        return minDepth(root.right)+1
-    }
-    return 1
-  
+  if (!root) {
+    return 0;
+  }
+  if (root.left && root.right) {
+    return Math.min(minDepth(root.left), minDepth(root.right)) + 1;
+  } else if (root.left) {
+    return minDepth(root.left) + 1;
+  } else if (root.right) {
+    return minDepth(root.right) + 1;
+  }
+  return 1;
 };
 //112. Path Sum
 var hasPathSum = function(root, sum) {
-    if (!root) {
+  if (!root) {
     return false;
   }
   if (root.val === sum && !root.left && !root.right) {
@@ -290,35 +292,108 @@ var hasPathSum = function(root, sum) {
 };
 //113. Path Sum II
 var pathSum = function(root, sum, nums = []) {
-    if (!root) {
-      return [];
-    }
-    if (sum === root.val && !root.left && !root.right) {
-      nums.push(sum);
-      return [nums];
-    }
-    nums.push(root.val);
-    return pathSum(root.left, sum - root.val, nums.slice()).concat(
-      pathSum(root.right, sum - root.val, nums.slice())
-    );
-  };
+  if (!root) {
+    return [];
+  }
+  if (sum === root.val && !root.left && !root.right) {
+    nums.push(sum);
+    return [nums];
+  }
+  nums.push(root.val);
+  return pathSum(root.left, sum - root.val, nums.slice()).concat(
+    pathSum(root.right, sum - root.val, nums.slice())
+  );
+};
 //114.Flatten Binary Tree to Linked List
 var flatten = function(root) {
-    if(!root){return []}
-     let rightNode = root.right,leftNode = root.left;
-    if(leftNode){
-        flatten(leftNode)
-        maxRight = leftNode ;
-        while(maxRight.right){
-            maxRight = maxRight.right  
-       }
-        
-       maxRight.right = rightNode;
-       root.right = leftNode;
-       root.left = null
+  if (!root) {
+    return [];
+  }
+  let rightNode = root.right,
+    leftNode = root.left;
+  if (leftNode) {
+    flatten(leftNode);
+    maxRight = leftNode;
+    while (maxRight.right) {
+      maxRight = maxRight.right;
     }
-    if(rightNode){
-        flatten(rightNode)
-    }
-}
 
+    maxRight.right = rightNode;
+    root.right = leftNode;
+    root.left = null;
+  }
+  if (rightNode) {
+    flatten(rightNode);
+  }
+};
+//116. Populating Next Right Pointers in Each Node
+var connect = function(root) {
+  if (!root) {
+    return;
+  }
+
+  let levelNodes = [root];
+  while (levelNodes[0]) {
+    let nextNodes = [],
+      len = levelNodes.length - 1;
+    for (let i = 0; i < len; i++) {
+      levelNodes[i].next = levelNodes[i + 1];
+      nextNodes.push(levelNodes[i].left);
+      nextNodes.push(levelNodes[i].right);
+    }
+    nextNodes.push(levelNodes[len].left);
+    nextNodes.push(levelNodes[len].right);
+    levelNodes = nextNodes;
+  }
+};
+//117. Populating Next Right Pointers in Each Node II
+var connect = function(root) {
+  if (!root) {
+    return;
+  }
+  let levelNodes = [root];
+  while (levelNodes.length) {
+    let nextNodes = [],
+      len = levelNodes.length - 1;
+    for (let i = 0; i < len; i++) {
+      levelNodes[i].next = levelNodes[i + 1];
+      if (levelNodes[i].left) {
+        nextNodes.push(levelNodes[i].left);
+      }
+      if (levelNodes[i].right) {
+        nextNodes.push(levelNodes[i].right);
+      }
+    }
+    if (levelNodes[len].left) nextNodes.push(levelNodes[len].left);
+    if (levelNodes[len].right) nextNodes.push(levelNodes[len].right);
+    levelNodes = nextNodes;
+  }
+};
+//118. Pascal's Triangle
+var generate = function(numRows) {
+  if(numRows==0)return []
+  if(numRows===1){
+      return [[1]]
+  }
+  var triangle=[[1]];
+  for(let i=1;i<numRows;i++){
+      var temp=[1],lastVal=triangle[i-1];
+      for(let j=0,len=lastVal.length;j<len-1;j++){
+          temp.push(lastVal[j]+lastVal[j+1])
+      }
+      temp.push(1)
+      triangle.push(temp)
+  }
+  return triangle
+};
+//119. Pascal's Triangle II
+var getRow = function(rowIndex) {
+  if (rowIndex === 0) {
+      return [1]
+  }
+  return [1].concat(getRow(rowIndex - 1).map(function (n, index, arr) {
+      if(index<arr.length-1)
+          return (n + arr[index + 1]);
+      return 1
+  }))
+};
