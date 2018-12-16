@@ -371,29 +371,43 @@ var connect = function(root) {
 };
 //118. Pascal's Triangle
 var generate = function(numRows) {
-  if(numRows==0)return []
-  if(numRows===1){
-      return [[1]]
+  if (numRows == 0) return [];
+  if (numRows === 1) {
+    return [[1]];
   }
-  var triangle=[[1]];
-  for(let i=1;i<numRows;i++){
-      var temp=[1],lastVal=triangle[i-1];
-      for(let j=0,len=lastVal.length;j<len-1;j++){
-          temp.push(lastVal[j]+lastVal[j+1])
-      }
-      temp.push(1)
-      triangle.push(temp)
+  var triangle = [[1]];
+  for (let i = 1; i < numRows; i++) {
+    var temp = [1],
+      lastVal = triangle[i - 1];
+    for (let j = 0, len = lastVal.length; j < len - 1; j++) {
+      temp.push(lastVal[j] + lastVal[j + 1]);
+    }
+    temp.push(1);
+    triangle.push(temp);
   }
-  return triangle
+  return triangle;
 };
 //119. Pascal's Triangle II
 var getRow = function(rowIndex) {
   if (rowIndex === 0) {
-      return [1]
+    return [1];
   }
-  return [1].concat(getRow(rowIndex - 1).map(function (n, index, arr) {
-      if(index<arr.length-1)
-          return (n + arr[index + 1]);
-      return 1
-  }))
+  return [1].concat(
+    getRow(rowIndex - 1).map(function(n, index, arr) {
+      if (index < arr.length - 1) return n + arr[index + 1];
+      return 1;
+    })
+  );
+};
+//120. Triangle
+var minimumTotal = function(triangle) {
+  let len = triangle.length - 1;
+  while (len > 0) {
+    let rowLength = triangle[len].length;
+    for (let i = 0; i < rowLength; i++) {
+      triangle[len - 1][i] += Math.min(triangle[len][i], triangle[len][i + 1]);
+    }
+    len--;
+  }
+  return triangle[0][0];
 };
