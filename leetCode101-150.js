@@ -411,3 +411,97 @@ var minimumTotal = function(triangle) {
   }
   return triangle[0][0];
 };
+//121. Best Time to Buy and Sell Stock
+var maxProfit = function(prices) {
+  let max=0,begin=prices[0],end;
+  for(let j=1,len=prices.length;j<len;j++){
+      let end = prices[j];
+      if(end<begin){begin=end}
+      else{
+          let temp=end-begin;
+          max=temp>max?temp:max
+      }
+  
+  }
+  return max
+};
+//122. Best Time to Buy and Sell Stock II
+var maxProfit = function(prices) {
+  let max=0,begin=prices[0];
+  for(let j=1,len=prices.length;j<len;j++){
+      let end = prices[j];
+      if(begin<end){
+          max = max+end-begin
+      }
+      begin=end
+  }
+  return max
+};
+//125. Valid Palindrome
+var isPalindrome = function(s) {
+  let str = s.replace(/[^a-zA-Z0-9]/g,"").toLowerCase();
+  for(let j=0,len=str.length-1;j<len;j++,len--){
+      if(str[j]!==str[len]){
+          return false
+      }
+  }
+  return true
+};
+//127. Word Ladder
+var ladderLength = function(beginWord, endWord, wordList, shortest = 2) {
+  let index = wordList.findIndex(n => n === endWord);
+   if (index === -1) {
+     return 0;
+   }
+   if (isLadder(beginWord, endWord)) {
+     return shortest;
+   }
+   let nextBegins = [],existWords = [];
+   for (let i = 0, len = wordList.length; i < len; ) {
+     if (isLadder(beginWord, wordList[i]) && beginWord !== wordList[i]) {
+       nextBegins.push(wordList[i]);
+       existWords.push(wordList[i]);
+       wordList.splice(i, 1);
+       len--;
+     } else {
+       i++;
+     }
+   }
+   while (nextBegins.length) {
+     shortest++;
+     let nextWordSet = [];
+     for (let i = 0, len = nextBegins.length; i < len; i++) {
+       
+       if (isLadder(nextBegins[i], endWord)) {
+         return shortest;
+       }
+       for (let j = 0, len1 = wordList.length; j < len1; ) {
+         if (isLadder(nextBegins[i], wordList[j]) && !existWords.includes(wordList[j])) {
+           nextWordSet.push(wordList[j]);
+           existWords.push(wordList[j]);
+           wordList.splice(j, 1);
+           len1--;
+         } else {
+           j++;
+         }
+       }
+     }
+     nextBegins = nextWordSet;
+   }
+   return 0;
+   function isLadder(word1, word2) {
+     if (word1 === word2) {
+       return false;
+     }
+     for (let i = 0, len = word1.length; i < len; i++) {
+       if (word1[i] !== word2[i]) {
+         if (word1.slice(i + 1) === word2.slice(i + 1)) {
+           return true;
+         } else {
+           return false;
+         }
+       }
+     }
+     return true;
+   }
+ };
