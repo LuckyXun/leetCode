@@ -505,3 +505,4 @@ var ladderLength = function(beginWord, endWord, wordList, shortest = 2) {
      return true;
    }
  };
+ 
