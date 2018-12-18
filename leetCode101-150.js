@@ -533,3 +533,80 @@ var sumNumbers = function(root) {
     return [root.val];
   }
 };
+//130. Surrounded Regions
+var solve = function(board) {
+  if (!board.length) {
+    return;
+  }
+
+  let rowStart = 0,
+    rowEnd = board.length - 1,
+    columnStart = 0,
+    columnEnd = board[0].length - 1;
+
+  let saveSet = new Set();
+  if (rowStart >= rowEnd || columnStart >= columnEnd) {
+    return;
+  }
+
+  for (let i = 0; i <= columnEnd; i++) {
+    if (board[rowStart][i] === 'O') {
+      board[rowStart][i] = '#';
+      saveSet.add(rowStart + '|' + i);
+    }
+  }
+  for (let i = 0; i <= columnEnd; i++) {
+    if (board[rowEnd][i] === 'O') {
+      board[rowEnd][i] = '#';
+      saveSet.add(rowEnd + '|' + i);
+    }
+  }
+  for (let i = 1; i <= rowEnd; i++) {
+    if (board[i][columnStart] === 'O') {
+      board[i][columnStart] = '#';
+      saveSet.add(i + '|' + columnStart);
+    }
+  }
+  for (let i = 1; i <= rowEnd; i++) {
+    if (board[i][columnEnd] === 'O') {
+      board[i][columnEnd] = '#';
+      saveSet.add(i + '|' + columnEnd);
+    }
+  }
+  while (saveSet.size) {
+    let nextSet = new Set();
+    saveSet.forEach(n => {
+      let pos = n.split('|'),
+        row = pos[0],
+        col = pos[1];
+
+      if (board[row - 1] && board[row - 1][col] === 'O') {
+        board[row - 1][col] = '#';
+        nextSet.add(row - 1 + '|' + col);
+      }
+      if (board[+row + 1] && board[+row + 1][col] === 'O') {
+        board[+row + 1][col] = '#';
+        nextSet.add(+row + 1 + '|' + col);
+      }
+      if (board[+row][+col + 1] === 'O') {
+        board[+row][+col + 1] = '#';
+        nextSet.add(row + '|' + (+col + 1));
+      }
+      if (board[+row][col - 1] === 'O') {
+        board[+row][col - 1] = '#';
+        nextSet.add(row + '|' + (col - 1));
+      }
+    });
+    saveSet = nextSet;
+  }
+  for (let i = 0; i <= rowEnd; i++) {
+    for (let j = 0; j <= columnEnd; j++) {
+      if (board[i][j] === 'O') {
+        board[i][j] = 'X';
+      }
+      if (board[i][j] === '#') {
+        board[i][j] = 'O';
+      }
+    }
+  }
+};
