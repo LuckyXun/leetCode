@@ -669,3 +669,32 @@ var cloneGraph = function(graph) {
   }
   return myEntry;
 };
+//134. Gas Station
+var canCompleteCircuit = function(gas, cost) {
+  let tank = 0;
+ for(let i=0,len=gas.length;i<len;i++){
+   if(gas[i]>=cost[i]){
+     tank = gas[i];
+     let startIndex = i,nowIndex = i+1;
+     while(tank>0){        
+      if(nowIndex>=len){
+          nowIndex-=len
+      }
+      let costIndex = nowIndex-1;
+      if(nowIndex===0){
+          costIndex = len-1
+      }
+      let existGas =  tank -cost[costIndex]; 
+      if(existGas<0){
+         break
+       }
+       if(nowIndex===startIndex){
+         return startIndex
+       }
+       tank=existGas+gas[nowIndex];
+       nowIndex++;
+     }
+   }
+ }
+ return -1
+};
