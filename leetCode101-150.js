@@ -610,3 +610,28 @@ var solve = function(board) {
     }
   }
 };
+//131. Palindrome Partitioning
+var partition = function(s) {
+  let strLen = s.length;
+  if(strLen===0){
+    return []
+  }
+  if(strLen===1){
+    return [[s]]
+  }
+  let partitions = [];
+  for(let i=1;i<strLen;i++){
+    if(isPalindrome(s.slice(0,i))){
+      partitions.push(...partition(s.slice(i)).map(n=>[s.slice(0,i),...n]))
+    }
+  }
+  return partitions
+  function isPalindrome(str){
+     for(let i=0,len=str.length-1;i<=len;i++,len--){
+        if(str[i]!==str[len]){
+           return false 
+        }
+     } 
+     return true
+  }
+};
