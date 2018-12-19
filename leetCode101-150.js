@@ -613,25 +613,59 @@ var solve = function(board) {
 //131. Palindrome Partitioning
 var partition = function(s) {
   let strLen = s.length;
-  if(strLen===0){
-    return []
+  if (strLen === 0) {
+    return [];
   }
-  if(strLen===1){
-    return [[s]]
+  if (strLen === 1) {
+    return [[s]];
   }
   let partitions = [];
-  for(let i=1;i<strLen;i++){
-    if(isPalindrome(s.slice(0,i))){
-      partitions.push(...partition(s.slice(i)).map(n=>[s.slice(0,i),...n]))
+  for (let i = 1; i < strLen; i++) {
+    if (isPalindrome(s.slice(0, i))) {
+      partitions.push(...partition(s.slice(i)).map(n => [s.slice(0, i), ...n]));
     }
   }
-  return partitions
-  function isPalindrome(str){
-     for(let i=0,len=str.length-1;i<=len;i++,len--){
-        if(str[i]!==str[len]){
-           return false 
-        }
-     } 
-     return true
+  return partitions;
+  function isPalindrome(str) {
+    for (let i = 0, len = str.length - 1; i <= len; i++, len--) {
+      if (str[i] !== str[len]) {
+        return false;
+      }
+    }
+    return true;
   }
+};
+//133. Clone Graph
+var cloneGraph = function(graph) {
+  if (!graph) {
+    return null;
+  }
+  let myEntry = new UndirectedGraphNode(graph.label),
+    nodeSet = new Set([myEntry]),
+    existMap = new Map();
+  existMap.set(myEntry.label, myEntry);
+  myEntry.neighbors = graph.neighbors;
+  while (nodeSet.size) {
+    let nextSet = new Set();
+    nodeSet.forEach(n => {
+      let oriNeighbor = n.neighbors;
+      if (oriNeighbor) {
+        let newNeibors = [];
+        for (let i = 0, len = oriNeighbor.length; i < len; i++) {
+          if (existMap.has(oriNeighbor[i].label)) {
+            newNeibors.push(existMap.get(oriNeighbor[i].label));
+          } else {
+            let newNode = new UndirectedGraphNode(oriNeighbor[i].label);
+            newNode.neighbors = oriNeighbor[i].neighbors;
+            existMap.set(oriNeighbor[i].label, newNode);
+            newNeibors.push(newNode);
+            nextSet.add(newNode);
+          }
+        }
+        n.neighbors = newNeibors;
+      }
+    });
+    nodeSet = nextSet;
+  }
+  return myEntry;
 };
