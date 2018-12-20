@@ -804,3 +804,28 @@ var wordBreak = function(s, wordDict) {
   }
   return false;
 };
+//141. Linked List Cycle
+var hasCycle = function(head) {
+  if(!head){
+       return false
+   }
+   var temp1 = head,temp2=head;
+   while(temp2&&temp2.next){
+       temp1=temp1.next;
+       temp2=temp2.next.next;
+       if(temp1==temp2){return true}
+       
+   }
+   return false    
+};
+//142. Linked List Cycle II
+var detectCycle = function(head) {
+  while(head){
+     if(head.cycle){
+         return head
+     }
+     head.cycle = true;
+      head = head.next
+  }
+  return null
+};
