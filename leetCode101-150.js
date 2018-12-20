@@ -672,29 +672,89 @@ var cloneGraph = function(graph) {
 //134. Gas Station
 var canCompleteCircuit = function(gas, cost) {
   let tank = 0;
- for(let i=0,len=gas.length;i<len;i++){
-   if(gas[i]>=cost[i]){
-     tank = gas[i];
-     let startIndex = i,nowIndex = i+1;
-     while(tank>0){        
-      if(nowIndex>=len){
-          nowIndex-=len
+  for (let i = 0, len = gas.length; i < len; i++) {
+    if (gas[i] >= cost[i]) {
+      tank = gas[i];
+      let startIndex = i,
+        nowIndex = i + 1;
+      while (tank > 0) {
+        if (nowIndex >= len) {
+          nowIndex -= len;
+        }
+        let costIndex = nowIndex - 1;
+        if (nowIndex === 0) {
+          costIndex = len - 1;
+        }
+        let existGas = tank - cost[costIndex];
+        if (existGas < 0) {
+          break;
+        }
+        if (nowIndex === startIndex) {
+          return startIndex;
+        }
+        tank = existGas + gas[nowIndex];
+        nowIndex++;
       }
-      let costIndex = nowIndex-1;
-      if(nowIndex===0){
-          costIndex = len-1
+    }
+  }
+  return -1;
+};
+//136. Single Number
+var singleNumber = function(nums) {
+  let t = nums[0];
+  for (let j = 1, len = nums.length; j < len; j++) {
+    t = t ^ nums[j];
+  }
+  return t;
+};
+//137. Single Number II
+var singleNumber = function(nums) {
+  let one = 0,
+    two = 0,
+    three = 0;
+  for (let i = 0; i < nums.length; ++i) {
+    two = two | (one & nums[i]);
+    one ^= nums[i];
+    three = one & two;
+    one &= ~three;
+    two &= ~three;
+  }
+  return one;
+};
+//138. Copy List with Random Pointer
+var copyRandomList = function(head) {
+  if (!head) {
+    return null;
+  }
+  let existNode = new Map(),
+    root = new RandomListNode(head.label),
+    header = root;
+  existNode.set(root.label, root);
+  root.next = head.next;
+  root.random = head.random;
+  while (root) {
+    if (root.random) {
+      if (!existNode.has(root.random.label)) {
+        let randomNode = new RandomListNode(root.random.label);
+        existNode.set(randomNode.label, randomNode);
       }
-      let existGas =  tank -cost[costIndex]; 
-      if(existGas<0){
-         break
-       }
-       if(nowIndex===startIndex){
-         return startIndex
-       }
-       tank=existGas+gas[nowIndex];
-       nowIndex++;
-     }
-   }
- }
- return -1
+      root.random = existNode.get(root.random.label);
+    }
+    let oriNextNode = root.next,
+      nextNode = null;
+    if (!oriNextNode) {
+      return header;
+    }
+    if (existNode.has(oriNextNode.label)) {
+      nextNode = existNode.get(oriNextNode.label);
+    } else {
+      nextNode = new RandomListNode(oriNextNode.label);
+      existNode.set(nextNode.label, nextNode);
+    }
+    nextNode.next = oriNextNode.next;
+    nextNode.random = oriNextNode.random;
+    root.next = nextNode;
+    root = root.next;
+  }
+  return header;
 };
