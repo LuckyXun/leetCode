@@ -758,3 +758,49 @@ var copyRandomList = function(head) {
   }
   return header;
 };
+//139. Word Break
+var wordBreak = function(s, wordDict) {
+  if (!wordDict || wordDict.length == 0) return false
+  var dp = new Array(s.length + 1);
+  dp.fill(false)
+  dp[0] = true
+  
+  for(var i = 1; i <= s.length; i++) {
+      for(var j = 0; j < i; j++) {
+          if(dp[j] && wordDict.indexOf(s.substring(j, i)) >= 0) {
+              
+              dp[i] = true
+              break;
+          }
+      }
+  }
+  return dp[s.length]
+};
+var wordBreak = function(s, wordDict) {
+  if (s === '') {
+    return true;
+  }
+  if (!wordDict || wordDict.length == 0) return false
+  for (let i = 0, len = wordDict.length; i < len; i++) {
+    let str = wordDict[i];
+    if (str === s) {
+      return true;
+    }
+    let index = s.indexOf(str);
+    while(~index) {
+      let mys = s.split(str),myDic = wordDict.slice();
+      myDic.splice(i,1);
+      let j=0,len1 = mys.length
+      for(;j<len1;j++){
+        if(mys[j]&&!wordBreak(mys[j],myDic)){
+          break;
+        }
+      }
+      if(j===len1){
+        return true
+      }
+      break
+    }
+  }
+  return false;
+};
