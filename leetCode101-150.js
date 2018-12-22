@@ -875,3 +875,36 @@ var preorderTraversal = function(root) {
   }
   return [root.val,...preorderTraversal(root.left),...preorderTraversal(root.right)]
 };
+//145. Binary Tree Postorder Traversal
+var postorderTraversal = function(root) {
+  if(!root){
+      return []
+  }
+  let nodes = [root],nums=[];
+  while(nodes.length){
+      let lastNode =  nodes[nodes.length-1];
+      if(!lastNode.right&&!lastNode.left){
+          let node=nodes.pop();
+          nums.push(node.val)
+    
+      }
+      if(lastNode.right){
+          nodes.push(lastNode.right);
+          lastNode.right = null ;
+      }
+      if(lastNode.left){
+           nodes.push(lastNode.left);
+           lastNode.left =null
+      }  
+    }  
+    return nums 
+};
+var postorderTraversal = function(root) {
+  if(!root){
+   return []
+}
+if(!root.right&&!root.left){
+   return [root.val]
+}
+return [...postorderTraversal(root.left),...postorderTraversal(root.right),root.val]
+};
