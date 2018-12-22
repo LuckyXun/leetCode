@@ -848,3 +848,30 @@ var reorderList = function(head) {
   head = tail.next    
   }
 };
+//144. Binary Tree Preorder Traversal
+var preorderTraversal = function(root) {
+  if(!root){
+      return []
+  }
+  let nodes=[root],nums=[];
+  while(nodes.length){
+      let node = nodes.pop();
+      nums.push(node.val);
+      if(node.right){
+          nodes.push(node.right)
+      }
+      if(node.left){
+           nodes.push(node.left)
+      }
+  }
+  return nums
+};
+var preorderTraversal = function(root) {
+  if(!root){
+      return []
+  }
+  if(!root.right&&!root.left){
+      return [root.val]
+  }
+  return [root.val,...preorderTraversal(root.left),...preorderTraversal(root.right)]
+};
