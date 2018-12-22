@@ -829,3 +829,22 @@ var detectCycle = function(head) {
   }
   return null
 };
+//143. Reorder List
+var reorderList = function(head) {
+  if(!head||!head.next){
+      return head
+  }
+  let nodes = [],header =head ;
+  while(header.next){
+      nodes.push(header);
+      header = header.next
+  }
+  while(head.next&&head.next.next){
+       let tailSec = nodes.pop();
+  let tail = tailSec.next;
+  tailSec.next = null
+  tail.next = head.next
+  head.next = tail;
+  head = tail.next    
+  }
+};
