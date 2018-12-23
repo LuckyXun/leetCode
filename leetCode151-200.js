@@ -86,3 +86,18 @@ var findMin = function(nums) {
       return findMin(nums.slice(0, mid));
     }
   };
+//154. Find Minimum in Rotated Sorted Array II
+var findMin = function(nums) {
+    var min=nums[0];
+        if(nums.length==1)
+            return nums[0];
+        for(var i=0;i<nums.length-1;i++){
+            if(nums[i]<=nums[i+1])
+                continue;
+            min=nums[i+1];
+            break;
+        }
+        
+        return min;
+
+  };
