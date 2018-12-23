@@ -760,151 +760,210 @@ var copyRandomList = function(head) {
 };
 //139. Word Break
 var wordBreak = function(s, wordDict) {
-  if (!wordDict || wordDict.length == 0) return false
+  if (!wordDict || wordDict.length == 0) return false;
   var dp = new Array(s.length + 1);
-  dp.fill(false)
-  dp[0] = true
-  
-  for(var i = 1; i <= s.length; i++) {
-      for(var j = 0; j < i; j++) {
-          if(dp[j] && wordDict.indexOf(s.substring(j, i)) >= 0) {
-              
-              dp[i] = true
-              break;
-          }
+  dp.fill(false);
+  dp[0] = true;
+
+  for (var i = 1; i <= s.length; i++) {
+    for (var j = 0; j < i; j++) {
+      if (dp[j] && wordDict.indexOf(s.substring(j, i)) >= 0) {
+        dp[i] = true;
+        break;
       }
+    }
   }
-  return dp[s.length]
+  return dp[s.length];
 };
 var wordBreak = function(s, wordDict) {
   if (s === '') {
     return true;
   }
-  if (!wordDict || wordDict.length == 0) return false
+  if (!wordDict || wordDict.length == 0) return false;
   for (let i = 0, len = wordDict.length; i < len; i++) {
     let str = wordDict[i];
     if (str === s) {
       return true;
     }
     let index = s.indexOf(str);
-    while(~index) {
-      let mys = s.split(str),myDic = wordDict.slice();
-      myDic.splice(i,1);
-      let j=0,len1 = mys.length
-      for(;j<len1;j++){
-        if(mys[j]&&!wordBreak(mys[j],myDic)){
+    while (~index) {
+      let mys = s.split(str),
+        myDic = wordDict.slice();
+      myDic.splice(i, 1);
+      let j = 0,
+        len1 = mys.length;
+      for (; j < len1; j++) {
+        if (mys[j] && !wordBreak(mys[j], myDic)) {
           break;
         }
       }
-      if(j===len1){
-        return true
+      if (j === len1) {
+        return true;
       }
-      break
+      break;
     }
   }
   return false;
 };
 //141. Linked List Cycle
 var hasCycle = function(head) {
-  if(!head){
-       return false
-   }
-   var temp1 = head,temp2=head;
-   while(temp2&&temp2.next){
-       temp1=temp1.next;
-       temp2=temp2.next.next;
-       if(temp1==temp2){return true}
-       
-   }
-   return false    
+  if (!head) {
+    return false;
+  }
+  var temp1 = head,
+    temp2 = head;
+  while (temp2 && temp2.next) {
+    temp1 = temp1.next;
+    temp2 = temp2.next.next;
+    if (temp1 == temp2) {
+      return true;
+    }
+  }
+  return false;
 };
 //142. Linked List Cycle II
 var detectCycle = function(head) {
-  while(head){
-     if(head.cycle){
-         return head
-     }
-     head.cycle = true;
-      head = head.next
+  while (head) {
+    if (head.cycle) {
+      return head;
+    }
+    head.cycle = true;
+    head = head.next;
   }
-  return null
+  return null;
 };
 //143. Reorder List
 var reorderList = function(head) {
-  if(!head||!head.next){
-      return head
+  if (!head || !head.next) {
+    return head;
   }
-  let nodes = [],header =head ;
-  while(header.next){
-      nodes.push(header);
-      header = header.next
+  let nodes = [],
+    header = head;
+  while (header.next) {
+    nodes.push(header);
+    header = header.next;
   }
-  while(head.next&&head.next.next){
-       let tailSec = nodes.pop();
-  let tail = tailSec.next;
-  tailSec.next = null
-  tail.next = head.next
-  head.next = tail;
-  head = tail.next    
+  while (head.next && head.next.next) {
+    let tailSec = nodes.pop();
+    let tail = tailSec.next;
+    tailSec.next = null;
+    tail.next = head.next;
+    head.next = tail;
+    head = tail.next;
   }
 };
 //144. Binary Tree Preorder Traversal
 var preorderTraversal = function(root) {
-  if(!root){
-      return []
+  if (!root) {
+    return [];
   }
-  let nodes=[root],nums=[];
-  while(nodes.length){
-      let node = nodes.pop();
-      nums.push(node.val);
-      if(node.right){
-          nodes.push(node.right)
-      }
-      if(node.left){
-           nodes.push(node.left)
-      }
+  let nodes = [root],
+    nums = [];
+  while (nodes.length) {
+    let node = nodes.pop();
+    nums.push(node.val);
+    if (node.right) {
+      nodes.push(node.right);
+    }
+    if (node.left) {
+      nodes.push(node.left);
+    }
   }
-  return nums
+  return nums;
 };
 var preorderTraversal = function(root) {
-  if(!root){
-      return []
+  if (!root) {
+    return [];
   }
-  if(!root.right&&!root.left){
-      return [root.val]
+  if (!root.right && !root.left) {
+    return [root.val];
   }
-  return [root.val,...preorderTraversal(root.left),...preorderTraversal(root.right)]
+  return [
+    root.val,
+    ...preorderTraversal(root.left),
+    ...preorderTraversal(root.right)
+  ];
 };
 //145. Binary Tree Postorder Traversal
 var postorderTraversal = function(root) {
-  if(!root){
-      return []
+  if (!root) {
+    return [];
   }
-  let nodes = [root],nums=[];
-  while(nodes.length){
-      let lastNode =  nodes[nodes.length-1];
-      if(!lastNode.right&&!lastNode.left){
-          let node=nodes.pop();
-          nums.push(node.val)
-    
-      }
-      if(lastNode.right){
-          nodes.push(lastNode.right);
-          lastNode.right = null ;
-      }
-      if(lastNode.left){
-           nodes.push(lastNode.left);
-           lastNode.left =null
-      }  
-    }  
-    return nums 
+  let nodes = [root],
+    nums = [];
+  while (nodes.length) {
+    let lastNode = nodes[nodes.length - 1];
+    if (!lastNode.right && !lastNode.left) {
+      let node = nodes.pop();
+      nums.push(node.val);
+    }
+    if (lastNode.right) {
+      nodes.push(lastNode.right);
+      lastNode.right = null;
+    }
+    if (lastNode.left) {
+      nodes.push(lastNode.left);
+      lastNode.left = null;
+    }
+  }
+  return nums;
 };
 var postorderTraversal = function(root) {
-  if(!root){
-   return []
-}
-if(!root.right&&!root.left){
-   return [root.val]
-}
-return [...postorderTraversal(root.left),...postorderTraversal(root.right),root.val]
+  if (!root) {
+    return [];
+  }
+  if (!root.right && !root.left) {
+    return [root.val];
+  }
+  return [
+    ...postorderTraversal(root.left),
+    ...postorderTraversal(root.right),
+    root.val
+  ];
+};
+//147. Insertion Sort List
+var insertionSortList = function(head) {
+  if (!head) {
+    return null;
+  }
+  let preNode = null;
+  while (head.next && !head.next.sorted) {
+    let header = head,
+      firstFlag = true;
+    while (header.next && !header.next.sorted) {
+      if (header.val > header.next.val) {
+        let tempNode = header.next;
+        header.next = tempNode.next;
+        tempNode.next = header;
+        if (firstFlag) {
+          head = tempNode;
+        } else {
+          preNode.next = tempNode;
+        }
+        preNode = tempNode;
+      } else {
+        preNode = header;
+        header = header.next;
+      }
+      firstFlag = false;
+    }
+    header.sorted = true;
+  }
+  return head;
+};
+var insertionSortList = function(head) {
+  if(!head){
+      return null
+  }
+  
+  let nums = [];
+  while(head){
+      nums.push(head);
+      head = head.next;
+  }
+  nums.sort((a,b)=>a.val-b.val)
+  nums.forEach((n,index)=>{
+      n.next = nums[index+1]
+  })
+  return nums[0]
 };
