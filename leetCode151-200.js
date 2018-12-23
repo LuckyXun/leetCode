@@ -58,3 +58,31 @@ var maxProduct = function(nums) {
       }
     }
 };
+//153. Find Minimum in Rotated Sorted Array
+var findMin = function(nums) {
+    let 
+      len = nums.length,
+      mid = (len / 2) | 0,
+      left = mid - 1,
+      right = mid + 1;
+    if (mid === 0) {
+      return nums[0];
+    }
+    if(nums[len-1]>nums[0]){
+      return nums[0]
+    }
+   if (left >= 0 && right < len) {
+      if (nums[mid] < nums[left] && nums[mid] < nums[right]) {
+        return nums[mid];
+      }
+    }
+    if(right>=len&&nums[mid] < nums[left]){
+      return nums[mid];
+    }
+    if (nums[mid] > nums[0]) {
+      return findMin(nums.slice(mid + 1));
+    }
+    if (nums[mid] < nums[0]) {
+      return findMin(nums.slice(0, mid));
+    }
+  };
