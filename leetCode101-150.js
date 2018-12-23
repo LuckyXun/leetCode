@@ -1039,3 +1039,18 @@ var sortList = function(head) {
       return slow;
   }
 };
+//150. Evaluate Reverse Polish Notation
+var evalRPN = function(tokens) {
+  let nums=[];
+ tokens.forEach(n=>{
+   if(+n===+n){
+     nums.push(n)
+   }else{
+     let secNum = nums.pop(),firNum=nums.pop(),
+     result =  eval(firNum+n+"("+secNum+")")|0;
+     nums.push(result)
+   }
+ 
+ })
+return nums[0]
+};
