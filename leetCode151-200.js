@@ -8,9 +8,6 @@ var maxProduct = function(nums) {
     if(nums.length===1){
         return nums[0]
     }  
-      
-      
-      
     let numsByZero = [],zeroIndex = nums.findIndex(n=>n===0);
     while(zeroIndex!==-1){
        let noZeroNums = nums.splice(0,zeroIndex);
@@ -101,3 +98,13 @@ var findMin = function(nums) {
         return min;
 
   };
+//162. Find Peak Element
+var findPeakElement = function(nums) {
+  nums[-1]=Number.MIN_SAFE_INTEGER;
+ for(var i=0,len=nums.length;i<len;i++){
+     if(nums[i]>nums[i-1]&&nums[i]>nums[i+1]){
+         return i
+     }
+ }
+ return i-1
+};
