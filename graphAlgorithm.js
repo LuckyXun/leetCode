@@ -91,12 +91,13 @@ let curryAdd = currying(add);
 curryAdd(222, 1)(2)(1, 3);
 //阶乘尾调用
 function factorial(n, total) {
+  console.log("total",n,total)
   if (n === 1) {
     return total;
   }
   return factorial(n - 1, n * total);
 }
-console.log(factorial(1,1))
+console.log(factorial(5,1))
 function Fibonacci(total, a1, a2) {
   if (total-- === 0) {
     return a1;
@@ -126,7 +127,7 @@ let a = {
   },
   list = { a, a1, a2, a3, a4 };
 function dijkstra(list) {
-  let cost = a,
+  let cost = Object.assign(a),
     processed = [];
   while (processed.length < 5) {
     find_lowest_node(cost, processed);
@@ -134,6 +135,7 @@ function dijkstra(list) {
   return cost;
 }
 function find_lowest_node(cost, processed) {
+  console.log(processed,cost)
   for (let key in cost) {
     if (processed.includes(key)) {
       continue;
