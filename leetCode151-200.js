@@ -98,6 +98,15 @@ var findMin = function(nums) {
         return min;
 
   };
+//160. Intersection of Two Linked Lists
+var getIntersectionNode = function(headA, headB) {
+  let p1 = headA ,p2 = headB;
+  while (p1 !== p2) {
+      p1 = (p1 == null ? headB : p1.next);
+      p2 = (p2 == null ? headA : p2.next);
+  }
+  return p1;
+};
 //162. Find Peak Element
 var findPeakElement = function(nums) {
   nums[-1]=Number.MIN_SAFE_INTEGER;
@@ -107,4 +116,30 @@ var findPeakElement = function(nums) {
      }
  }
  return i-1
+};
+//165. Compare Version Numbers
+var compareVersion = function(version1, version2) {
+  let ver1 = version1.split('.'),
+    ver2 = version2.split('.');
+  while (ver1.length && ver2.length) {
+    let num1 = +ver1.shift(),
+      num2 = +ver2.shift();
+    if (num1 > num2) {
+      return 1;
+    }
+    if (num1 < num2) {
+      return -1;
+    }
+  }
+  while(ver1.length){
+        if(+ver1.shift()!==0){
+            return 1
+        }
+    }
+    while(ver2.length){
+        if(+ver2.shift()!==0){
+            return -1
+        }
+    }
+  return 0;
 };
