@@ -143,3 +143,104 @@ var compareVersion = function(version1, version2) {
     }
   return 0;
 };
+//167. Two Sum II - Input array is sorted
+var twoSum = function(numbers, target) {
+  let begin = 0, end = numbers.length - 1, val = numbers[0] + numbers[end];
+  while (begin < end) {
+      if(val===target)
+          return[++begin,++end];
+      if (val > target)
+          end--;
+      if (val < target)
+          begin++;
+      val = numbers[begin] + numbers[end]
+  }
+  return []
+};
+//168. Excel Sheet Column Title
+var convertToTitle = function(n) {
+  var sheet = "",temp=n;
+  while(n>26){
+      temp=n%26;
+        if(temp===0){
+          sheet= 'Z'+sheet;
+          n--
+      }else{
+          sheet= String.fromCharCode(64+temp)+sheet;
+      }
+      n = Math.floor(n/26);
+  }
+  sheet= String.fromCharCode(64+n)+sheet;
+  return sheet;
+
+};
+//169. Majority Element
+var majorityElement = function(nums) {
+  let temp = [];
+for(let i=0,len=nums.length;i<len;i++){
+    if(temp[nums[i]]){
+        temp[nums[i]]++   
+    }else {
+        temp[nums[i]]=1
+    }
+    if(temp[nums[i]]>Math.floor(len/2)){
+        return nums[i]
+    }
+    
+}
+};
+//171. Excel Sheet Column Number
+var titleToNumber = function(s) {
+  var num = 0,t=s.length;
+  for(let i=0,len=s.length;i<len;i++){
+      t--;
+      num+=(s.charCodeAt(i)-64)*Math.pow(26,t);
+  }
+  return num 
+};
+//172. Factorial Trailing Zeroes
+var trailingZeroes = function(n) {
+  if(n < 5)
+        return 0;
+  else 
+      return Math.floor(n/5) + trailingZeroes( Math.floor(n/5));
+};
+//173. Binary Search Tree Iterator
+var BSTIterator = function(root) {
+  if(root){
+       this.stack = [root];
+       while(root&&root.left){ 
+    root=root.left;  
+    this.stack.push(root);
+     }  
+  } else{
+       this.stack = [];
+  }
+};
+BSTIterator.prototype.hasNext = function() {
+  return this.stack.length>0
+};
+BSTIterator.prototype.next = function() {
+  let curNode = this.stack.pop(),curVal=curNode.val;
+   if(curNode.right){
+       this.stack.push(curNode.right);
+       let node = curNode.right
+       while(node.left){ 
+           node=node.left;  
+           this.stack.push(node);
+        }  
+    }
+    return curVal;  
+};
+//179. Largest Number
+var largestNumber = function(nums) {
+  nums.sort((m,n)=>{
+      return (n+""+m)-(m+""+n);
+  })
+  let result = nums.join("");
+  if(result[0]==="0"){
+      return "0"
+  }
+  return result
+};
+
