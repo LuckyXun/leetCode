@@ -269,3 +269,45 @@ var rightSideView = function(root) {
   });
   return nums;
 };
+//200. Number of Islands
+var numIslands = function(grid) {
+  if (grid.length === 0) {
+    return 0;
+  }
+
+  let rowNum = grid.length,
+    colNum = grid[0].length,
+    count = 0;
+  for (let i = 0; i < rowNum; i++)
+    for (let j = 0; j < colNum; j++) {
+      if (grid[i][j] === '1') {
+        grid[i][j] = 2;
+        if (
+          (!grid[i - 1] || grid[i - 1][j] !== 2) &&
+          (!grid[i + 1] || grid[i + 1][j] !== 2) &&
+          grid[i][j - 1] !== 2 &&
+          grid[i][j + 1] !== 2
+        ) {
+          count++;
+          remarkIsland(i, j);
+        }
+      }
+    }
+  return count;
+
+  function remarkIsland(i, j) {
+    grid[i][j] = 2;
+    if (grid[i - 1] && grid[i - 1][j] === '1') {
+      remarkIsland(i - 1, j);
+    }
+    if (grid[i + 1] && grid[i + 1][j] === '1') {
+      remarkIsland(i + 1, j);
+    }
+    if (grid[i][j + 1] === '1') {
+      remarkIsland(i, j + 1);
+    }
+    if (grid[i][j - 1] === '1') {
+      remarkIsland(i, j - 1);
+    }
+  }
+};
