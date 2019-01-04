@@ -142,3 +142,24 @@ var canFinish = function(numCourses, prerequisites) {
     return true;
   }
 };
+//208. Implement Trie (Prefix Tree)
+var Trie = function() {
+  this.data = new Set();  
+  this.pre = new Set();
+};
+Trie.prototype.insert = function(word) {
+  this.data.add(word);
+  if(!this.pre.has(word)){
+    for(let i=0,len=word.length;i<=len;i++){
+       this.pre.add(word.slice(0,i))
+    }
+  }
+ 
+};
+Trie.prototype.search = function(word) {
+  return this.data.has(word)
+};
+Trie.prototype.startsWith = function(prefix) {
+  return this.pre.has(prefix)
+  
+};
