@@ -163,3 +163,31 @@ Trie.prototype.startsWith = function(prefix) {
   return this.pre.has(prefix)
   
 };
+//209. Minimum Size Subarray Sum
+var minSubArrayLen = function(s, nums) {
+  let minLen = Number.MAX_SAFE_INTEGER,pos=0,left=0,len=nums.length,sum=0;
+  while(pos<len){
+    sum+=nums[pos];
+    while(sum>=s){
+      minLen=Math.min(minLen,pos-left+1);
+      sum -= nums[left];
+      left++
+    }
+    pos++
+  }
+  return minLen===Number.MAX_SAFE_INTEGER?0:minLen
+};
+var minSubArrayLen = function(s, nums) {
+  let step = 1,len= nums.length, numsCopy = nums.slice(),len2 = len;
+  while(step<=len){
+    for(let i=0;i<len2;i++){
+      if(numsCopy[i]>=s){
+        return step;
+      }
+      numsCopy[i]+=nums[i+step];
+    }
+    step++;
+    len2--;
+  }
+  return 0
+};
