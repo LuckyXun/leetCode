@@ -226,3 +226,24 @@ var findOrder = function(numCourses, prerequisites) {
   }
   return seq;
 };
+//211. Add and Search Word - Data structure design
+var WordDictionary = function() {
+  this.searchHelper = new Map()
+};
+WordDictionary.prototype.addWord = function(word) {
+  let searchHeaper = this.searchHelper,len = word.length;
+  if(searchHeaper.has(len)){
+      searchHeaper.get(len).push(word)
+  }else{
+       searchHeaper.set(len,[word])
+  }
+};
+WordDictionary.prototype.search = function(word) {
+  let reg = new RegExp('^'+word+"$"),words = this.searchHelper.get(word.length)||[];
+  for(let i=0,len=words.length;i<len;i++){
+      if(words[i].match(reg)){
+          return true
+      }
+  }
+  return false
+};
