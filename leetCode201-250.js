@@ -191,3 +191,38 @@ var minSubArrayLen = function(s, nums) {
   }
   return 0
 };
+//210. Course Schedule II
+var findOrder = function(numCourses, prerequisites) {
+  let seq = [],
+    n = numCourses,
+    sidesCount = new Map();
+  while (n >0) {
+    n--;
+    sidesCount.set(n, {
+      count:0,
+      nextNodes:[]
+    });
+  }
+  for (let i = 0, len = prerequisites.length; i < len; i++) {
+    let startInfo = sidesCount.get(prerequisites[i][0]),endInfo =  sidesCount.get(prerequisites[i][1]);
+    startInfo.count++;
+    endInfo.nextNodes.push(prerequisites[i][0])
+  }
+  let mapIter  = sidesCount.entries(),val = mapIter.next().value;
+  while(seq.length<numCourses){ 
+     if(!val){
+       return []
+     }
+     if(val[1].count===0){
+       seq.push(val[0]);
+       let nextNodes = val[1].nextNodes;
+       nextNodes.forEach(n=>{
+         sidesCount.get(n).count--
+       }) 
+       sidesCount.delete(val[0]);
+       mapIter  = sidesCount.entries();
+     }
+     val = mapIter.next().value
+  }
+  return seq;
+};
