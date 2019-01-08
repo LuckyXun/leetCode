@@ -144,128 +144,176 @@ var canFinish = function(numCourses, prerequisites) {
 };
 //208. Implement Trie (Prefix Tree)
 var Trie = function() {
-  this.data = new Set();  
+  this.data = new Set();
   this.pre = new Set();
 };
 Trie.prototype.insert = function(word) {
   this.data.add(word);
-  if(!this.pre.has(word)){
-    for(let i=0,len=word.length;i<=len;i++){
-       this.pre.add(word.slice(0,i))
+  if (!this.pre.has(word)) {
+    for (let i = 0, len = word.length; i <= len; i++) {
+      this.pre.add(word.slice(0, i));
     }
   }
- 
 };
 Trie.prototype.search = function(word) {
-  return this.data.has(word)
+  return this.data.has(word);
 };
 Trie.prototype.startsWith = function(prefix) {
-  return this.pre.has(prefix)
-  
+  return this.pre.has(prefix);
 };
 //209. Minimum Size Subarray Sum
 var minSubArrayLen = function(s, nums) {
-  let minLen = Number.MAX_SAFE_INTEGER,pos=0,left=0,len=nums.length,sum=0;
-  while(pos<len){
-    sum+=nums[pos];
-    while(sum>=s){
-      minLen=Math.min(minLen,pos-left+1);
+  let minLen = Number.MAX_SAFE_INTEGER,
+    pos = 0,
+    left = 0,
+    len = nums.length,
+    sum = 0;
+  while (pos < len) {
+    sum += nums[pos];
+    while (sum >= s) {
+      minLen = Math.min(minLen, pos - left + 1);
       sum -= nums[left];
-      left++
+      left++;
     }
-    pos++
+    pos++;
   }
-  return minLen===Number.MAX_SAFE_INTEGER?0:minLen
+  return minLen === Number.MAX_SAFE_INTEGER ? 0 : minLen;
 };
 var minSubArrayLen = function(s, nums) {
-  let step = 1,len= nums.length, numsCopy = nums.slice(),len2 = len;
-  while(step<=len){
-    for(let i=0;i<len2;i++){
-      if(numsCopy[i]>=s){
+  let step = 1,
+    len = nums.length,
+    numsCopy = nums.slice(),
+    len2 = len;
+  while (step <= len) {
+    for (let i = 0; i < len2; i++) {
+      if (numsCopy[i] >= s) {
         return step;
       }
-      numsCopy[i]+=nums[i+step];
+      numsCopy[i] += nums[i + step];
     }
     step++;
     len2--;
   }
-  return 0
+  return 0;
 };
 //210. Course Schedule II
 var findOrder = function(numCourses, prerequisites) {
   let seq = [],
     n = numCourses,
     sidesCount = new Map();
-  while (n >0) {
+  while (n > 0) {
     n--;
     sidesCount.set(n, {
-      count:0,
-      nextNodes:[]
+      count: 0,
+      nextNodes: []
     });
   }
   for (let i = 0, len = prerequisites.length; i < len; i++) {
-    let startInfo = sidesCount.get(prerequisites[i][0]),endInfo =  sidesCount.get(prerequisites[i][1]);
+    let startInfo = sidesCount.get(prerequisites[i][0]),
+      endInfo = sidesCount.get(prerequisites[i][1]);
     startInfo.count++;
-    endInfo.nextNodes.push(prerequisites[i][0])
+    endInfo.nextNodes.push(prerequisites[i][0]);
   }
-  let mapIter  = sidesCount.entries(),val = mapIter.next().value;
-  while(seq.length<numCourses){ 
-     if(!val){
-       return []
-     }
-     if(val[1].count===0){
-       seq.push(val[0]);
-       let nextNodes = val[1].nextNodes;
-       nextNodes.forEach(n=>{
-         sidesCount.get(n).count--
-       }) 
-       sidesCount.delete(val[0]);
-       mapIter  = sidesCount.entries();
-     }
-     val = mapIter.next().value
+  let mapIter = sidesCount.entries(),
+    val = mapIter.next().value;
+  while (seq.length < numCourses) {
+    if (!val) {
+      return [];
+    }
+    if (val[1].count === 0) {
+      seq.push(val[0]);
+      let nextNodes = val[1].nextNodes;
+      nextNodes.forEach(n => {
+        sidesCount.get(n).count--;
+      });
+      sidesCount.delete(val[0]);
+      mapIter = sidesCount.entries();
+    }
+    val = mapIter.next().value;
   }
   return seq;
 };
 //211. Add and Search Word - Data structure design
 var WordDictionary = function() {
-  this.searchHelper = new Map()
+  this.searchHelper = new Map();
 };
 WordDictionary.prototype.addWord = function(word) {
-  let searchHeaper = this.searchHelper,len = word.length;
-  if(searchHeaper.has(len)){
-      searchHeaper.get(len).push(word)
-  }else{
-       searchHeaper.set(len,[word])
+  let searchHeaper = this.searchHelper,
+    len = word.length;
+  if (searchHeaper.has(len)) {
+    searchHeaper.get(len).push(word);
+  } else {
+    searchHeaper.set(len, [word]);
   }
 };
 WordDictionary.prototype.search = function(word) {
-  let reg = new RegExp('^'+word+"$"),words = this.searchHelper.get(word.length)||[];
-  for(let i=0,len=words.length;i<len;i++){
-      if(words[i].match(reg)){
-          return true
-      }
+  let reg = new RegExp('^' + word + '$'),
+    words = this.searchHelper.get(word.length) || [];
+  for (let i = 0, len = words.length; i < len; i++) {
+    if (words[i].match(reg)) {
+      return true;
+    }
   }
-  return false
+  return false;
 };
 //213. House Robber II
 var rob = function(nums) {
   let len = nums.length;
-  if(len===1){
-      return nums[0]
-  }  
-  return Math.max(myRob(nums.slice(1)),myRob(nums.slice(0,len-1)))
+  if (len === 1) {
+    return nums[0];
+  }
+  return Math.max(myRob(nums.slice(1)), myRob(nums.slice(0, len - 1)));
   function myRob(nums) {
-    var len = nums.length,mid=Math.floor(len/2);
-     if(len===0){
-         return 0
-     }
-     if(len<=2){
-         return Math.max(...nums)
-     }
-     if(len===3){
-         return Math.max(nums[0]+nums[2],nums[1])
-     }
- 
-     return Math.max(myRob(nums.slice(0,mid))+myRob(nums.slice(mid+1)),myRob(nums.slice(0,mid-1))+myRob(nums.slice(mid)))
- };
+    var len = nums.length,
+      mid = Math.floor(len / 2);
+    if (len === 0) {
+      return 0;
+    }
+    if (len <= 2) {
+      return Math.max(...nums);
+    }
+    if (len === 3) {
+      return Math.max(nums[0] + nums[2], nums[1]);
+    }
+
+    return Math.max(
+      myRob(nums.slice(0, mid)) + myRob(nums.slice(mid + 1)),
+      myRob(nums.slice(0, mid - 1)) + myRob(nums.slice(mid))
+    );
+  }
+};
+//215. Kth Largest Element in an Array
+var findKthLargest = function(nums, k) {
+  let rightCount = 0;
+  return quickSort(nums);
+  function quickSort(list) {
+    if (list.length < 2) {
+      return list[0];
+    }
+    let data = list[0];
+    let left = [],
+      right = [];
+    for (let i = 1; i < list.length; i++) {
+      if (list[i] <= data) {
+        left.push(list[i]);
+      } else {
+        right.push(list[i]);
+      }
+    }
+    rightCount = rightCount + right.length;
+    if (k === rightCount + 1) {
+      return data;
+    }
+    if (k > rightCount + 1) {
+      rightCount++;
+      return quickSort(left);
+    }
+    if (k < rightCount + 1) {
+      rightCount -= right.length;
+      return quickSort(right);
+    }
+  }
+};
+var findKthLargest = function(nums, k) {
+  return nums.sort((a,b)=>b-a)[k-1]
 };
