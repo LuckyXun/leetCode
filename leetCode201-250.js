@@ -247,3 +247,25 @@ WordDictionary.prototype.search = function(word) {
   }
   return false
 };
+//213. House Robber II
+var rob = function(nums) {
+  let len = nums.length;
+  if(len===1){
+      return nums[0]
+  }  
+  return Math.max(myRob(nums.slice(1)),myRob(nums.slice(0,len-1)))
+  function myRob(nums) {
+    var len = nums.length,mid=Math.floor(len/2);
+     if(len===0){
+         return 0
+     }
+     if(len<=2){
+         return Math.max(...nums)
+     }
+     if(len===3){
+         return Math.max(nums[0]+nums[2],nums[1])
+     }
+ 
+     return Math.max(myRob(nums.slice(0,mid))+myRob(nums.slice(mid+1)),myRob(nums.slice(0,mid-1))+myRob(nums.slice(mid)))
+ };
+};
