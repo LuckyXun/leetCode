@@ -317,3 +317,38 @@ var findKthLargest = function(nums, k) {
 var findKthLargest = function(nums, k) {
   return nums.sort((a,b)=>b-a)[k-1]
 };
+//216. Combination Sum III
+var combinationSum3 = function(k, n,nums=[1,2,3,4,5,6,7,8,9]) {
+  let maxValue = 0,count = k,combines=[];
+  if(k===2){
+    return combinationSum(nums,n)
+  }
+  let i=0,len=nums.length;
+  while(i<len){
+    let diff = n-nums[i];
+    if(diff<=nums[i+1]){
+      break
+    }
+    combines = combines.concat(combinationSum3(k-1,diff,nums.slice(i+1)).map(n=>[nums[i],...n]));
+    i++
+  }
+  return combines
+  function combinationSum(nums,n){
+    let left = 0,right = nums.length-1,combines=[];
+    while(left<right){
+      let sum = nums[left]+nums[right];
+      if(sum===n){
+        combines.push([nums[left],nums[right]]);
+        left++;
+        right--
+      }
+      if(sum>n){
+        right--
+      }
+      if(sum<n){
+        left++
+      }
+    }  
+    return combines
+  }
+};
