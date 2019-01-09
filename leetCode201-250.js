@@ -352,3 +352,28 @@ var combinationSum3 = function(k, n,nums=[1,2,3,4,5,6,7,8,9]) {
     return combines
   }
 };
+//217. Contains Duplicate
+var containsDuplicate = function(nums) { 
+  return Array.from(new Set(nums)).length!==nums.length
+}
+var containsDuplicate = function(nums) { 
+  var len = nums.length,pos=0,temp={};
+  for(;pos<len;pos++){
+      if(temp[nums[pos]]){
+          return true
+      }
+      temp[nums[pos]]=true;
+  }
+  return false
+}
+//219. Contains Duplicate II
+var containsNearbyDuplicate = function(nums, k) {
+  var len = nums.length,pos=0,temp={};
+  for(;pos<len;pos++){
+      if(temp[nums[pos]]&&pos-temp[nums[pos]]<k){
+          return true
+      }
+      temp[nums[pos]]=pos+1;
+  }
+  return false
+};
